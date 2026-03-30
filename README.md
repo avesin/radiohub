@@ -1,4 +1,3 @@
-samples, guidance on mobile development, and a full API reference.
 # RadioApp
 
 A cross-platform Flutter application for streaming radio stations.
