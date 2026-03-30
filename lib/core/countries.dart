@@ -1,0 +1,17 @@
+const countries = [
+  "Indonesia",
+  "United States",
+  "China",
+  "Germany",
+  "Japan",
+  "India",
+  "United Kingdom",
+  "France",
+  "Italy",
+  "Brazil",
+  "Canada",
+  "Russia",
+  "The Republic Of Korea",
+  "Australia",
+  "Spain",
+];
