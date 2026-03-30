@@ -10,6 +10,25 @@ A cross-platform Flutter application for streaming radio stations.
 
 ## Getting Started
 
+
+### Screenshots
+<table align="center" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center">
+      <img src="https://res.cloudinary.com/dtfr5rwgo/image/upload/v1774851782/Screenshot_1774851391_ce96gg.png" alt="Screenshot 4" width="150"/>
+    </td>
+    <td align="center">
+      <img src="https://res.cloudinary.com/dtfr5rwgo/image/upload/v1774851782/Screenshot_1774851396_dknscz.png" alt="Screenshot 3" width="150"/>
+    </td>
+    <td align="center">
+      <img src="https://res.cloudinary.com/dtfr5rwgo/image/upload/v1774851782/Screenshot_1774851400_r8k2a7.png" alt="Screenshot 2" width="150"/>
+    </td>
+    <td align="center">
+      <img src="https://res.cloudinary.com/dtfr5rwgo/image/upload/v1774851782/Screenshot_1774851404_adifnm.png" alt="Screenshot 1" width="150"/>
+    </td>
+  </tr>
+</table>
+
 ### Prerequisites
 - [Flutter SDK](https://flutter.dev/docs/get-started/install)
 - Dart 3.x
