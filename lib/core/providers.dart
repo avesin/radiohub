@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:encrypt_shared_preferences/provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -24,16 +25,17 @@ final dioProvider = Provider<Dio>((ref) {
       receiveTimeout: Duration(seconds: 10),
     ),
   );
-  dio.interceptors.add(
-    PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      filter: (options, args) {
-        //  return !options.uri.path.contains('posts');
-        return !args.isResponse || !args.hasUint8ListData;
-      },
-    ),
-  );
+  if (kDebugMode) {
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        filter: (options, args) {
+          return !args.isResponse || !args.hasUint8ListData;
+        },
+      ),
+    );
+  }
   return dio;
 });
 
@@ -69,9 +71,10 @@ final _audioPlayerStateProvider = StreamProvider<PlayerState>((ref) {
 
 final _playerAudioSourceProvider = StreamProvider<UriAudioSource?>((ref) {
   final player = ref.watch(audioPlayerProvider);
-  return player.sequenceStateStream.map((s) {
+  final source = player.sequenceStateStream.map((s) {
     return s.currentSource as UriAudioSource?;
   });
+  return source;
 });
 
 final audioStateProvider = Provider<AsyncValue<AudioPlayerState>>((ref) {
@@ -82,6 +85,10 @@ final audioStateProvider = Provider<AsyncValue<AudioPlayerState>>((ref) {
   if (processing is AsyncData &&
       playerState is AsyncData &&
       source is AsyncData) {
+    print(
+      "AudioState updated tag: ${source.value?.headers.toString() ?? 'null'}}",
+    );
+    print("AudioState updated url: ${source.value?.uri ?? 'null'}}");
     return AsyncData(
       AudioPlayerState(
         processingState: processing.value,

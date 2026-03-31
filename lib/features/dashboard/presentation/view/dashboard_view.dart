@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttericon/typicons_icons.dart';
 import 'package:radioapp/core/colors.dart';
 import 'package:radioapp/core/providers.dart';
+import 'package:radioapp/core/repository.dart';
 import 'package:radioapp/core/view/notch_clipper.dart';
 import 'package:radioapp/core/view_model/location_viewmodel.dart';
 import 'package:radioapp/core/view_model/station_viewmodel.dart';
@@ -15,20 +15,24 @@ class DashboardView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AsyncValue<LocationData>>(locationProvider, (prev, next) {
+      next.when(
+        data: (value) {
+          print(
+            "New location:  ${value.position.latitude}, ${value.position.longitude}, country: ${value.placemark.country}",
+          );
+          ref.read(dashboardProvider.notifier).setLocation(value);
+        },
+        loading: () => print("Fetching location..."),
+        error: (error, stackTrace) => ref
+            .read(dashboardProvider.notifier)
+            .setLocationError("Error fetching location: $error"),
+      );
+    });
     final currentIndex = ref.watch(
       dashboardProvider.select((s) => s.currentIndex),
     );
-    final selectedCountryIndex = ref.watch(
-      dashboardProvider.select((s) => s.selectedCountryIndex),
-    );
-    final countries = ref.watch(dashboardProvider.select((s) => s.countries));
-    ref.listen(locationProvider, (prev, next) {
-      next.whenData(
-        (value) => ref
-            .read(dashboardProvider.notifier)
-            .setSelectedCountry(value.placemark.country),
-      );
-    });
+    ref.watch(dashboardProvider.select((s) => s.selectedCountry));
     final station = ref.watch(stationProvider.select((s) => s.station));
     final player = ref.read(audioPlayerProvider);
     final playerState = ref.watch(audioStateProvider);
@@ -36,36 +40,15 @@ class DashboardView extends ConsumerWidget {
     return Scaffold(
       extendBody: true,
       backgroundColor: black,
-      body: Stack(children: [pages[currentIndex]]),
-      appBar: AppBar(
-        actions: [
-          Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Typicons.th_list_outline),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
-            ),
+      body: Column(
+        children: [
+          SizedBox(height: 40),
+          Expanded(
+            child: ref.read(locationProvider).isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Stack(children: [pages[currentIndex]]),
           ),
         ],
-      ),
-      endDrawer: Drawer(
-        child: Container(
-          color: dark,
-          child: ListView.builder(
-            itemCount: countries.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(countries[index]),
-                selected: index == selectedCountryIndex,
-                onTap: () => {
-                  ref.read(dashboardProvider.notifier).selectCountry(index),
-                  Scaffold.of(context).closeEndDrawer(),
-                },
-              );
-            },
-          ),
-        ),
       ),
       floatingActionButton: PlaybuttonView(
         onPressed: () {

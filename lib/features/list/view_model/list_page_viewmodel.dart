@@ -12,6 +12,7 @@ final listPageProvider = AsyncNotifierProvider<ListPageViewmodel, ListState>(
 );
 
 class ListPageViewmodel extends AsyncNotifier<ListState> {
+  static const int _maxLastHit = 3600000; // 1 hour in milliseconds
   String _country = '';
   double? _latitude;
   double? _longitude;
@@ -21,51 +22,55 @@ class ListPageViewmodel extends AsyncNotifier<ListState> {
     _country = ref.watch(
       dashboardProvider.select((s) => s.selectedCountry ?? ''),
     );
+    print("ListPageViewmodel build called with country: $_country");
     final loc = ref.watch(dashboardProvider.select((s) => s.location));
     if (loc != null) {
       _latitude = loc.position.latitude;
       _longitude = loc.position.longitude;
     }
-
-    if (_country.isEmpty) {
-      final locationRepo = ref.read(locationRepositoryProvider);
-      final location = await locationRepo.getLocations();
-      _country = location.placemark.country ?? '';
-      _latitude = location.position.latitude;
-      _longitude = location.position.longitude;
-    }
-    return ListState().copyWith(stations: await fetchStations(_country));
+    print(
+      "Building ListPageViewmodel with country: $_country, latitude: $_latitude, longitude: $_longitude",
+    );
+    return ListState().copyWith(
+      stations: _country.isNotEmpty ? await fetchStations(_country) : [],
+    );
   }
 
   Future<List<Station>> fetchStations(String? country) async {
     final repo = ref.read(radioRepositoryProvider);
     final pref = ref.read(encryptedPrefsProvider);
-    if (country == null) {
+    if (country == null || _latitude == null || _longitude == null) {
       final locationRepo = ref.read(locationRepositoryProvider);
       final location = await locationRepo.getLocations();
-      _country = location.placemark.country ?? '';
+      if (country != null) {
+        _country = country;
+      } else {
+        _country = location.placemark.country ?? '';
+      }
+
       _latitude = location.position.latitude;
       _longitude = location.position.longitude;
     }
     List<Station> stations = [];
     final now = DateTime.now().millisecondsSinceEpoch;
-    int lasthit = await pref.getInt("last_hit", defaultValue: 0) ?? 0;
+    int lasthit = await pref.getInt("last_hit_$_country", defaultValue: 0) ?? 0;
     if (pref.getKeys().contains(_country)) {
       stations = pref
           .getStringList(_country)!
           .map((s) => Station.fromJson(jsonDecode(s)))
           .toList();
     }
-    if (stations.isEmpty || now - lasthit > 3600000) {
+    print(
+      "country: $_country, lasthit: $lasthit, now: $now, diff: ${now - lasthit}, data: ${stations.length}",
+    );
+    if (stations.isEmpty || now - lasthit > _maxLastHit) {
       stations = await repo.fetchStations(_country, _latitude, _longitude);
       await pref.setStringList(
         _country,
         stations.map((s) => jsonEncode(s.toJson())).toList(),
       );
-      await pref.setInt("last_hit", now);
-      print("Fetched ${now - lasthit} seconds 11111");
+      await pref.setInt("last_hit_$_country", now);
     }
-    print("Fetched ${now - lasthit} seconds 22222");
     return stations;
   }
 

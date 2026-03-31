@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DashboardState {
 
- int get currentIndex; int? get selectedCountryIndex; String? get selectedCountry; LocationData? get location; List<String> get countries;
+ int get currentIndex; int? get selectedCountryIndex; String? get selectedCountry; LocationData? get location; List<String> get countries; String? get locationError;
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $DashboardStateCopyWith<DashboardState> get copyWith => _$DashboardStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardState&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.selectedCountryIndex, selectedCountryIndex) || other.selectedCountryIndex == selectedCountryIndex)&&(identical(other.selectedCountry, selectedCountry) || other.selectedCountry == selectedCountry)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other.countries, countries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DashboardState&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.selectedCountryIndex, selectedCountryIndex) || other.selectedCountryIndex == selectedCountryIndex)&&(identical(other.selectedCountry, selectedCountry) || other.selectedCountry == selectedCountry)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other.countries, countries)&&(identical(other.locationError, locationError) || other.locationError == locationError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentIndex,selectedCountryIndex,selectedCountry,location,const DeepCollectionEquality().hash(countries));
+int get hashCode => Object.hash(runtimeType,currentIndex,selectedCountryIndex,selectedCountry,location,const DeepCollectionEquality().hash(countries),locationError);
 
 @override
 String toString() {
-  return 'DashboardState(currentIndex: $currentIndex, selectedCountryIndex: $selectedCountryIndex, selectedCountry: $selectedCountry, location: $location, countries: $countries)';
+  return 'DashboardState(currentIndex: $currentIndex, selectedCountryIndex: $selectedCountryIndex, selectedCountry: $selectedCountry, location: $location, countries: $countries, locationError: $locationError)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $DashboardStateCopyWith<$Res>  {
   factory $DashboardStateCopyWith(DashboardState value, $Res Function(DashboardState) _then) = _$DashboardStateCopyWithImpl;
 @useResult
 $Res call({
- int currentIndex, int? selectedCountryIndex, String? selectedCountry, LocationData? location, List<String> countries
+ int currentIndex, int? selectedCountryIndex, String? selectedCountry, LocationData? location, List<String> countries, String? locationError
 });
 
 
@@ -62,14 +62,15 @@ class _$DashboardStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? currentIndex = null,Object? selectedCountryIndex = freezed,Object? selectedCountry = freezed,Object? location = freezed,Object? countries = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? currentIndex = null,Object? selectedCountryIndex = freezed,Object? selectedCountry = freezed,Object? location = freezed,Object? countries = null,Object? locationError = freezed,}) {
   return _then(_self.copyWith(
 currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
 as int,selectedCountryIndex: freezed == selectedCountryIndex ? _self.selectedCountryIndex : selectedCountryIndex // ignore: cast_nullable_to_non_nullable
 as int?,selectedCountry: freezed == selectedCountry ? _self.selectedCountry : selectedCountry // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as LocationData?,countries: null == countries ? _self.countries : countries // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,locationError: freezed == locationError ? _self.locationError : locationError // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int currentIndex,  int? selectedCountryIndex,  String? selectedCountry,  LocationData? location,  List<String> countries)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int currentIndex,  int? selectedCountryIndex,  String? selectedCountry,  LocationData? location,  List<String> countries,  String? locationError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DashboardState() when $default != null:
-return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCountry,_that.location,_that.countries);case _:
+return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCountry,_that.location,_that.countries,_that.locationError);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCoun
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int currentIndex,  int? selectedCountryIndex,  String? selectedCountry,  LocationData? location,  List<String> countries)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int currentIndex,  int? selectedCountryIndex,  String? selectedCountry,  LocationData? location,  List<String> countries,  String? locationError)  $default,) {final _that = this;
 switch (_that) {
 case _DashboardState():
-return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCountry,_that.location,_that.countries);case _:
+return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCountry,_that.location,_that.countries,_that.locationError);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCoun
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int currentIndex,  int? selectedCountryIndex,  String? selectedCountry,  LocationData? location,  List<String> countries)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int currentIndex,  int? selectedCountryIndex,  String? selectedCountry,  LocationData? location,  List<String> countries,  String? locationError)?  $default,) {final _that = this;
 switch (_that) {
 case _DashboardState() when $default != null:
-return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCountry,_that.location,_that.countries);case _:
+return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCountry,_that.location,_that.countries,_that.locationError);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.currentIndex,_that.selectedCountryIndex,_that.selectedCoun
 
 
 class _DashboardState implements DashboardState {
-  const _DashboardState({this.currentIndex = 0, this.selectedCountryIndex, this.selectedCountry, this.location, final  List<String> countries = const []}): _countries = countries;
+  const _DashboardState({this.currentIndex = 0, this.selectedCountryIndex, this.selectedCountry, this.location, final  List<String> countries = const [], this.locationError = null}): _countries = countries;
   
 
 @override@JsonKey() final  int currentIndex;
@@ -224,6 +225,7 @@ class _DashboardState implements DashboardState {
   return EqualUnmodifiableListView(_countries);
 }
 
+@override@JsonKey() final  String? locationError;
 
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +237,16 @@ _$DashboardStateCopyWith<_DashboardState> get copyWith => __$DashboardStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardState&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.selectedCountryIndex, selectedCountryIndex) || other.selectedCountryIndex == selectedCountryIndex)&&(identical(other.selectedCountry, selectedCountry) || other.selectedCountry == selectedCountry)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other._countries, _countries));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DashboardState&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.selectedCountryIndex, selectedCountryIndex) || other.selectedCountryIndex == selectedCountryIndex)&&(identical(other.selectedCountry, selectedCountry) || other.selectedCountry == selectedCountry)&&(identical(other.location, location) || other.location == location)&&const DeepCollectionEquality().equals(other._countries, _countries)&&(identical(other.locationError, locationError) || other.locationError == locationError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,currentIndex,selectedCountryIndex,selectedCountry,location,const DeepCollectionEquality().hash(_countries));
+int get hashCode => Object.hash(runtimeType,currentIndex,selectedCountryIndex,selectedCountry,location,const DeepCollectionEquality().hash(_countries),locationError);
 
 @override
 String toString() {
-  return 'DashboardState(currentIndex: $currentIndex, selectedCountryIndex: $selectedCountryIndex, selectedCountry: $selectedCountry, location: $location, countries: $countries)';
+  return 'DashboardState(currentIndex: $currentIndex, selectedCountryIndex: $selectedCountryIndex, selectedCountry: $selectedCountry, location: $location, countries: $countries, locationError: $locationError)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$DashboardStateCopyWith<$Res> implements $DashboardStateCo
   factory _$DashboardStateCopyWith(_DashboardState value, $Res Function(_DashboardState) _then) = __$DashboardStateCopyWithImpl;
 @override @useResult
 $Res call({
- int currentIndex, int? selectedCountryIndex, String? selectedCountry, LocationData? location, List<String> countries
+ int currentIndex, int? selectedCountryIndex, String? selectedCountry, LocationData? location, List<String> countries, String? locationError
 });
 
 
@@ -272,14 +274,15 @@ class __$DashboardStateCopyWithImpl<$Res>
 
 /// Create a copy of DashboardState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? currentIndex = null,Object? selectedCountryIndex = freezed,Object? selectedCountry = freezed,Object? location = freezed,Object? countries = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? currentIndex = null,Object? selectedCountryIndex = freezed,Object? selectedCountry = freezed,Object? location = freezed,Object? countries = null,Object? locationError = freezed,}) {
   return _then(_DashboardState(
 currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
 as int,selectedCountryIndex: freezed == selectedCountryIndex ? _self.selectedCountryIndex : selectedCountryIndex // ignore: cast_nullable_to_non_nullable
 as int?,selectedCountry: freezed == selectedCountry ? _self.selectedCountry : selectedCountry // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as LocationData?,countries: null == countries ? _self._countries : countries // ignore: cast_nullable_to_non_nullable
-as List<String>,
+as List<String>,locationError: freezed == locationError ? _self.locationError : locationError // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

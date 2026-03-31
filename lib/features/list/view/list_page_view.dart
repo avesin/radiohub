@@ -20,7 +20,7 @@ class ListPageView extends ConsumerWidget {
     return Column(
       children: [
         SizedBox(
-          height: 32,
+          height: 42,
           child: ListView.builder(
             itemCount: countries.length,
             scrollDirection: Axis.horizontal,
@@ -70,15 +70,20 @@ Widget _tag(String text, bool isSelected, {VoidCallback? onTap}) {
     onTap: onTap,
     child: Container(
       margin: const EdgeInsets.only(right: 4, left: 4),
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16, // ← important
-        vertical: 6,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: isSelected ? primary : dark,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(text, style: TextStyle(color: isSelected ? dark : white)),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSelected ? white : gray,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     ),
   );
 }

@@ -14,24 +14,44 @@ class DashboardViewModel extends Notifier<DashboardState> {
   }
 
   void changeTab(int index) {
-    state = state.copyWith(currentIndex: index);
+    state = state.copyWith(currentIndex: index, locationError: null);
   }
 
   void selectCountry(int index) {
+    final country = state.countries[index];
+    print("Selected country: $country");
     state = state.copyWith(
+      locationError: null,
       selectedCountryIndex: index,
-      selectedCountry: state.countries[index],
+      selectedCountry: country,
     );
   }
 
   void setLocation(LocationData location) {
-    state = state.copyWith(location: location);
+    state = state.copyWith(
+      locationError: null,
+      location: location,
+      selectedCountry: location.placemark.country ?? state.selectedCountry,
+      selectedCountryIndex: location.placemark.country != null
+          ? state.countries.indexOf(location.placemark.country!)
+          : state.selectedCountryIndex,
+    );
   }
 
   void setSelectedCountry(String? country) {
     List<String> countryList = state.countries;
     if (country == null) return;
     !countryList.contains(country) ? countryList.add(country) : null;
-    state = state.copyWith(selectedCountry: country, countries: countryList);
+    final index = countryList.indexOf(country);
+    state = state.copyWith(
+      selectedCountry: country,
+      selectedCountryIndex: index,
+      countries: countryList,
+      locationError: null,
+    );
+  }
+
+  void setLocationError(String error) {
+    state = state.copyWith(locationError: error);
   }
 }

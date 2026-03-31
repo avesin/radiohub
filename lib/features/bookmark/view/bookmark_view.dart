@@ -9,19 +9,20 @@ class BookmarkView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bookmarks = ref.watch(bookmarkViewmodelProvider);
-    return Expanded(
-      child: ListView.builder(
-        itemCount: bookmarks.length,
-        itemBuilder: (_, i) {
-          final station = bookmarks[i];
-          return ListItemView(
-            station: station,
-            isFirst: i == 0,
-            isLast: i == bookmarks.length - 1,
-            onTap: (ctx) {},
-          );
-        },
-      ),
+    if (bookmarks.isEmpty) {
+      return const Center(child: Text('No bookmarks yet'));
+    }
+    return ListView.builder(
+      itemCount: bookmarks.length,
+      itemBuilder: (_, i) {
+        final station = bookmarks[i];
+        return ListItemView(
+          station: station,
+          isFirst: i == 0,
+          isLast: i == bookmarks.length - 1,
+          onTap: (ctx) {},
+        );
+      },
     );
   }
 }

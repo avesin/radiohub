@@ -11,5 +11,6 @@ abstract class DashboardState with _$DashboardState {
     String? selectedCountry,
     LocationData? location,
     @Default([]) List<String> countries,
+    @Default(null) String? locationError,
   }) = _DashboardState;
 }
